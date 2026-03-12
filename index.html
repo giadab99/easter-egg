@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Easter Egg</title>
+
+<style>
+
+body{
+  margin:0;
+  background:#0f0f0f;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:monospace;
+  color:white;
+  flex-direction:column;
+}
+
+#loading{
+  font-size:24px;
+}
+
+#game{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+}
+
+.heart{
+  display:grid;
+  grid-template-columns: repeat(8, 25px);
+  grid-gap:4px;
+  margin-bottom:30px;
+  cursor:pointer;
+}
+
+.pixel{
+  width:25px;
+  height:25px;
+  background:#ff3b3b;
+  opacity:0;
+  animation:spawn 0.4s forwards;
+}
+
+@keyframes spawn{
+  to{
+    opacity:1;
+    transform:scale(1.1);
+  }
+}
+
+.text{
+  font-size:20px;
+  opacity:0;
+  animation:fade 1s forwards;
+  animation-delay:2s;
+}
+
+@keyframes fade{
+  to{ opacity:1; }
+}
+
+#secret{
+  margin-top:20px;
+  opacity:0;
+  font-size:18px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div id="loading">
+Loading world...
+</div>
+
+<div id="game">
+
+<div class="heart" id="heart"></div>
+
+<div class="text">
+Achievement unlocked:<br>
+Easter Egg trovato
+</div>
+
+<div id="secret">
+Ti amo pulcetta <3
+</div>
+
+</div>
+
+<audio id="sound">
+<source src="achievement.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+setTimeout(()=>{
+  document.getElementById("loading").style.display="none";
+  document.getElementById("game").style.display="flex";
+  spawnHeart();
+  document.getElementById("sound").play();
+},2000);
+
+
+const pattern = [
+[0,1,1,0,0,1,1,0],
+[1,1,1,1,1,1,1,1],
+[1,1,1,1,1,1,1,1],
+[0,1,1,1,1,1,1,0],
+[0,0,1,1,1,1,0,0],
+[0,0,0,1,1,0,0,0]
+];
+
+function spawnHeart(){
+
+const heart = document.getElementById("heart");
+let delay = 0;
+
+pattern.forEach(row=>{
+  row.forEach(cell=>{
+
+    const div = document.createElement("div");
+
+    if(cell === 1){
+      div.classList.add("pixel");
+      div.style.animationDelay = delay + "s";
+      delay += 0.05;
+    }
+
+    heart.appendChild(div);
+
+  });
+});
+
+}
+
+document.getElementById("heart").onclick = () => {
+  document.getElementById("secret").style.opacity = 1;
+};
+
+</script>
+
+</body>
+</html>
+
